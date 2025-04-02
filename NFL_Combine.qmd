@@ -1,0 +1,163 @@
+---
+title: "NFL Combine: Player Evolution Over the Years"
+format: html
+---
+# NFL Combine Drill Analysis From 2000-2018
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+file_path = "/Users/mattgutierrez80/Downloads/NFL_Combine_Data.csv"
+nfl_combine_data = pd.read_csv(file_path)
+
+
+average_stats_per_pos = nfl_combine_data.groupby(['Year', 'Pos']).mean(numeric_only=True)
+average_stats_per_pos = average_stats_per_pos.reset_index()
+
+average_stats_per_pos.to_csv('/Users/mattgutierrez80/Downloads/average_stats_per_pos.csv', index=False)
+
+average_stats_per_year = nfl_combine_data.groupby('Year').mean(numeric_only=True).reset_index()
+average_stats_per_year.to_csv("/Users/mattgutierrez80/Downloads/average_stats_per_year.csv", index=False)
+
+```
+
+# 40-Yard Dash Times Over the Years
+```{python}
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Forty', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Average 40-Yard Dash Time")
+plt.title("NFL Combine: Average 40-Yard Dash Time Over the Years")
+plt.grid(True)
+plt.show()
+
+```
+
+# Bench Press Reps Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='BenchReps', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Average Bench Press Reps")
+plt.title("NFL Combine: Average Bench Press Reps Over the Years")
+plt.grid(True)
+plt.show()
+
+
+```
+
+# Vertical Jump Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Vertical', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Vertical Jump (inches)")
+plt.title("NFL Combine: Average Vertical Jump Over the Years")
+plt.grid(True)
+plt.show()
+```
+
+# Broad Jump Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='BroadJump', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Broad Jump (inches)")
+plt.title("NFL Combine: Average Broad Jump Over the Years")
+plt.grid(True)
+plt.show()
+```
+
+# Cone Drill Times Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Cone', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Cone Drill Time (seconds)")
+plt.title("NFL Combine: Average Cone Drill Time Over the Years")
+plt.grid(True)
+plt.show()
+```
+
+# Shuttle Drill Times Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Shuttle', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Shuttle Drill Time (seconds)")
+plt.title("NFL Combine: Average Shuttle Drill Time Over the Years")
+plt.grid(True)
+plt.show()
+```
+
+# Weight Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Wt', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Weight (lbs)")
+plt.title("NFL Combine: Average Weight Over the Years")
+plt.grid(True)
+plt.show()
+```
+
+# Height Over the Years
+```{python}
+plt.figure(figsize=(10, 5))
+sns.lineplot(data=average_stats_per_pos, x='Year', y='Ht', marker='o', ci=None)
+
+plt.xlabel("Year")
+plt.ylabel("Height (inches)")
+plt.title("NFL Combine: Average Height Over the Years")
+plt.grid(True)
+plt.show()
+
+```
+
+
+# Averages by Year
+```{python}
+import pandas as pd
+
+file_path = "/Users/mattgutierrez80/Downloads/NFL_Combine_Data.csv"
+df = pd.read_csv(file_path)
+
+average_stats_per_year = df.groupby('Year').mean(numeric_only=True).reset_index()
+
+print(average_stats_per_year.head())
+
+output_path = "/Users/mattgutierrez80/Downloads/average_stats_per_year.csv"
+average_stats_per_year.to_csv(output_path, index=False)
+print(f"File saved successfully at: {output_path}")
+
+```
+
+
+# Correlation Heatmap of All Combine Events
+```{python}
+numeric_data = average_stats_per_pos.select_dtypes(include=['number'])
+
+correlation_matrix = numeric_data.corr()
+
+plt.figure(figsize=(12, 8))
+sns.heatmap(correlation_matrix, annot=True, fmt=".2f", cmap="coolwarm", cbar=True, square=True, linewidths=0.5)
+plt.title("Correlation Heatmap of NFL Combine Data")
+plt.show()
+```
+
+
+# Takewways
+
+Looking at this heatmap, I can see some clear patterns in the NFL Combine data. Round and Pick are almost perfectly correlated, which makes sense since they both track draft position. Size-related metrics like height and weight are strongly linked, while speed (40-yard dash) has a negative correlation with those—basically, bigger players tend to run slower. Agility drills like the shuttle and cone drills are closely related, which isn’t surprising since they measure similar skills. One interesting thing is that AV (a performance metric) doesn’t always align with raw athleticism, meaning combine numbers don’t guarantee NFL success. Overall, this heatmap helps me see which stats are connected and how they might impact a player’s draft position and career.
